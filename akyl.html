@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Спорткары - Элитные автомобили</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#e63946",
+              secondary: "#457b9d",
+              carbon: "#222222",
+              "carbon-light": "#333333",
+              "carbon-dark": "#111111",
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+            fontFamily: {
+              montserrat: ["Montserrat", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f8f8f8;
+      color: #222;
+      }
+      .carbon-texture {
+      background-image: url('https://readdy.ai/api/search-image?query=dark%20carbon%20fiber%20texture%2C%20high%20quality%20material%2C%20seamless%20pattern%2C%20black%20and%20dark%20gray%2C%20luxury%20sports%20car%20material%2C%20detailed%20fiber%20weave%2C%20glossy%20finish%2C%20premium%20automotive%20material&width=1200&height=800&seq=carbon1&orientation=landscape');
+      background-size: cover;
+      position: relative;
+      }
+      .carbon-texture::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.4) 100%);
+      }
+      .search-input:focus {
+      box-shadow: 0 0 15px rgba(230, 57, 70, 0.5);
+      }
+      .search-input:focus + .search-icon {
+      color: #e63946;
+      }
+      .car-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      }
+      .car-card:hover .card-overlay {
+      opacity: 0.9;
+      }
+      .category-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 20px rgba(230, 57, 70, 0.3);
+      }
+      .stat-counter {
+      counter-reset: stat-value;
+      animation: count-up 2s ease-out forwards;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #e63946;
+      cursor: pointer;
+      border: 2px solid #fff;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      }
+      input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #e63946;
+      cursor: pointer;
+      border: 2px solid #fff;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      }
+      input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      background: #ddd;
+      border-radius: 5px;
+      outline: none;
+      }
+      input[type="range"]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+      background: linear-gradient(to right, #e63946, #457b9d);
+      border-radius: 5px;
+      }
+      input[type="range"]::-moz-range-track {
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+      background: linear-gradient(to right, #e63946, #457b9d);
+      border-radius: 5px;
+      }
+      .custom-checkbox {
+      position: relative;
+      padding-left: 30px;
+      cursor: pointer;
+      user-select: none;
+      }
+      .custom-checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+      }
+      .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      background-color: #333;
+      border: 1px solid #555;
+      border-radius: 4px;
+      }
+      .custom-checkbox:hover input ~ .checkmark {
+      background-color: #444;
+      }
+      .custom-checkbox input:checked ~ .checkmark {
+      background-color: #e63946;
+      border-color: #e63946;
+      }
+      .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+      }
+      .custom-checkbox input:checked ~ .checkmark:after {
+      display: block;
+      }
+      .custom-checkbox .checkmark:after {
+      left: 7px;
+      top: 3px;
+      width: 6px;
+      height: 11px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      }
+      .custom-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+      }
+      .custom-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      }
+      .switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #333;
+      transition: .4s;
+      border-radius: 24px;
+      }
+      .switch-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+      }
+      input:checked + .switch-slider {
+      background-color: #e63946;
+      }
+      input:checked + .switch-slider:before {
+      transform: translateX(26px);
+      }
+      .search-results {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      }
+      .search-results.active {
+      max-height: 500px;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <!-- Навигационная панель -->
+    <header
+      class="fixed top-0 left-0 right-0 z-50 bg-carbon-dark bg-opacity-90 backdrop-blur-md shadow-lg"
+    >
+      <div
+        class="container mx-auto px-4 py-3 flex items-center justify-between"
+      >
+        <a href="#" class="text-white font-['Pacifico'] text-3xl">Akylbek cars</a>
+        <nav class="hidden md:flex items-center space-x-6">
+          <a
+            href="#main"
+            class="text-white hover:text-primary transition-colors duration-300 text-sm font-medium"
+            >Главная</a
+          >
+          <a
+            href="#categories"
+            class="text-white hover:text-primary transition-colors duration-300 text-sm font-medium"
+            >Категории</a
+          >
+          <a
+            href="#specs"
+            class="text-white hover:text-primary transition-colors duration-300 text-sm font-medium"
+            >Характеристики</a
+          >
+          <a
+            href="#stats"
+            class="text-white hover:text-primary transition-colors duration-300 text-sm font-medium"
+            >Статистика</a
+          >
+          <a
+            href="#contact"
+            class="text-white hover:text-primary transition-colors duration-300 text-sm font-medium"
+            >Контакты</a
+          >
+        </nav>
+        <div
+          class="w-10 h-10 flex items-center justify-center md:hidden cursor-pointer text-white"
+          id="mobile-menu-button"
+        >
+          <i class="ri-menu-line ri-2x"></i>
+        </div>
+      </div>
+      <div id="mobile-menu" class="hidden bg-carbon-dark py-4 px-4 md:hidden">
+        <a
+          href="#main"
+          class="block text-white hover:text-primary py-2 transition-colors duration-300"
+          >Главная</a
+        >
+        <a
+          href="#categories"
+          class="block text-white hover:text-primary py-2 transition-colors duration-300"
+          >Категории</a
+        >
+        <a
+          href="#specs"
+          class="block text-white hover:text-primary py-2 transition-colors duration-300"
+          >Характеристики</a
+        >
+        <a
+          href="#stats"
+          class="block text-white hover:text-primary py-2 transition-colors duration-300"
+          >Статистика</a
+        >
+        <a
+          href="#contact"
+          class="block text-white hover:text-primary py-2 transition-colors duration-300"
+          >Контакты</a
+        >
+      </div>
+    </header>
+    <!-- Основной блок с поиском -->
+    <section
+      id="main"
+      class="carbon-texture pt-24 pb-20 min-h-screen flex items-center relative"
+    >
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-3xl mx-auto text-center mb-12">
+          <h1
+            class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight"
+          >
+            Откройте мир элитных <span class="text-primary">спорткаров</span>
+          </h1>
+          <p class="text-gray-300 text-lg md:text-xl mb-8">
+            Исследуйте самые быстрые, мощные и эксклюзивные автомобили со всего
+            мира
+          </p>
+          <div class="relative max-w-2xl mx-auto">
+            <input
+              type="text"
+              id="main-search"
+              class="search-input w-full bg-white bg-opacity-10 backdrop-blur-md text-white border border-gray-600 rounded-full py-4 px-6 pr-12 focus:outline-none focus:border-primary transition-all duration-300"
+              placeholder="Поиск по марке, модели или характеристикам..."
+            />
+            <div
+              class="search-icon absolute right-4 top-1/2 transform -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-400"
+            >
+              <i class="ri-search-line ri-lg"></i>
+            </div>
+            <div
+              id="search-results"
+              class="search-results absolute left-0 right-0 top-full mt-2 bg-carbon-light border border-gray-700 rounded-lg shadow-2xl z-50 overflow-hidden"
+            >
+              <div class="p-4">
+                <div class="flex flex-col space-y-3">
+                  <!-- Результаты поиска будут добавляться здесь -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-16 relative">
+          <div id="car-slider" class="overflow-hidden rounded-lg shadow-2xl">
+            <div class="relative h-[500px]">
+              <div
+                class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 opacity-100"
+                style="background-image: url('https://readdy.ai/api/search-image?query=luxury%20red%20Ferrari%20sports%20car%20on%20a%20dark%20background%2C%20carbon%20fiber%20elements%2C%20dramatic%20lighting%2C%20professional%20automotive%20photography%2C%20glossy%20finish%2C%20detailed%20shot%2C%20studio%20lighting%2C%208k%20resolution%2C%20hyperrealistic&width=1200&height=600&seq=car1&orientation=landscape')"
+              ></div>
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-black via-transparent to-transparent opacity-70"
+              ></div>
+              <div class="absolute bottom-0 left-0 p-8 max-w-lg">
+                <h3 class="text-3xl font-bold text-white mb-2">
+                  Ferrari SF90 Stradale
+                </h3>
+                <p class="text-gray-300 mb-4">
+                  Гибридный суперкар с мощностью 1000 л.с. и разгоном до 100
+                  км/ч за 2.5 секунды
+                </p>
+                <button
+                  class="bg-primary hover:bg-opacity-90 text-white py-3 px-6 rounded-button font-medium transition-all duration-300 flex items-center whitespace-nowrap"
+                >
+                  <span>Подробнее</span>
+                  <div class="w-5 h-5 flex items-center justify-center ml-2">
+                    <i class="ri-arrow-right-line"></i>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-center mt-6 space-x-2">
+            <button
+              class="w-3 h-3 rounded-full bg-primary"
+              data-index="0"
+            ></button>
+            <button
+              class="w-3 h-3 rounded-full bg-gray-500 hover:bg-primary transition-colors duration-300"
+              data-index="1"
+            ></button>
+            <button
+              class="w-3 h-3 rounded-full bg-gray-500 hover:bg-primary transition-colors duration-300"
+              data-index="2"
+            ></button>
+            <button
+              class="w-3 h-3 rounded-full bg-gray-500 hover:bg-primary transition-colors duration-300"
+              data-index="3"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Расширенный поиск -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-4">Расширенный поиск</h2>
+        <p class="text-gray-600 text-center max-w-2xl mx-auto mb-12">
+          Используйте фильтры для точного поиска спорткара вашей мечты
+        </p>
+        <div
+          class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-8 shadow-lg border border-gray-100"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 mb-3 flex items-center"
+              >
+                <div
+                  class="w-5 h-5 flex items-center justify-center mr-2 text-primary"
+                >
+                  <i class="ri-car-line"></i>
+                </div>
+                Марка
+              </label>
+              <div class="relative">
+                <button
+                  id="brand-dropdown-btn"
+                  class="w-full bg-white hover:bg-gray-50 border border-gray-200 shadow-sm rounded text-gray-700 py-3 px-4 flex items-center justify-between !rounded-button whitespace-nowrap transition duration-200"
+                >
+                  <span>Все марки</span>
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-arrow-down-s-line"></i>
+                  </div>
+                </button>
+                <div
+                  id="brand-dropdown"
+                  class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-10 overflow-hidden"
+                >
+                  <div class="max-h-60 overflow-y-auto">
+                    <div class="p-2 space-y-1">
+                      <div
+                        class="py-2 px-3 hover:bg-gray-50 cursor-pointer rounded flex items-center"
+                      >
+                        <img
+                          src="https://readdy.ai/api/search-image?query=ferrari%20logo%2C%20minimal%2C%20vector%20style%2C%20red%20color&width=24&height=24&seq=ferrari&orientation=squarish"
+                          class="w-6 h-6 mr-3"
+                          alt="Ferrari"
+                        />
+                        Ferrari
+                      </div>
+                      <div
+                        class="py-2 px-3 hover:bg-gray-50 cursor-pointer rounded flex items-center"
+                      >
+                        <img
+                          src="https://readdy.ai/api/search-image?query=lamborghini%20logo%2C%20minimal%2C%20vector%20style%2C%20gold%20color&width=24&height=24&seq=lambo&orientation=squarish"
+                          class="w-6 h-6 mr-3"
+                          alt="Lamborghini"
+                        />
+                        Lamborghini
+                      </div>
+                      <div
+                        class="py-2 px-3 hover:bg-gray-50 cursor-pointer rounded flex items-center"
+                      >
+                        <img
+                          src="https://readdy.ai/api/search-image?query=porsche%20logo%2C%20minimal%2C%20vector%20style%2C%20black%20color&width=24&height=24&seq=porsche&orientation=squarish"
+                          class="w-6 h-6 mr-3"
+                          alt="Porsche"
+                        />
+                        Porsche
+                      </div>
+                      <div
+                        class="py-2 px-3 hover:bg-gray-50 cursor-pointer rounded flex items-center"
+                      >
+                        <img
+                          src="https://readdy.ai/api/search-image?query=mclaren%20logo%2C%20minimal%2C%20vector%20style%2C%20orange%20color&width=24&height=24&seq=mclaren&orientation=squarish"
+                          class="w-6 h-6 mr-3"
+                          alt="McLaren"
+                        />
+                        McLaren
+                      </div>
+                      <div
+                        class="py-2 px-3 hover:bg-gray-50 cursor-pointer rounded flex items-center"
+                      >
+                        <img
+                          src="https://readdy.ai/api/search-image?query=bugatti%20logo%2C%20minimal%2C%20vector%20style%2C%20blue%20color&width=24&height=24&seq=bugatti&orientation=squarish"
+                          class="w-6 h-6 mr-3"
+                          alt="Bugatti"
+                        />
+                        Bugatti
+                      </div>
+                      <div
+                        class="py-2 px-3 hover:bg-gray-50 cursor-pointer rounded flex items-center"
+                      >
+                        <img
+                          src="https://readdy.ai/api/search-image?query=aston%20martin%20logo%2C%20minimal%2C%20vector%20style%2C%20silver%20color&width=24&height=24&seq=aston&orientation=squarish"
+                          class="w-6 h-6 mr-3"
+                          alt="Aston Martin"
+                        />
+                        Aston Martin
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 mb-3 flex items-center"
+              >
+                <div
+                  class="w-5 h-5 flex items-center justify-center mr-2 text-primary"
+                >
+                  <i class="ri-shape-2-line"></i>
+                </div>
+                Тип кузова
+              </label>
+              <div class="relative">
+                <button
+                  id="body-dropdown-btn"
+                  class="w-full bg-white hover:bg-gray-50 border border-gray-200 shadow-sm rounded text-gray-700 py-3 px-4 flex items-center justify-between !rounded-button whitespace-nowrap transition duration-200"
+                >
+                  <span>Все типы</span>
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-arrow-down-s-line"></i>
+                  </div>
+                </button>
+                <div
+                  id="body-dropdown"
+                  class="hidden absolute left-0 right-0 top-full mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-10"
+                >
+                  <div class="p-2 space-y-1">
+                    <div
+                      class="py-2 px-3 hover:bg-gray-50 cursor-pointer rounded flex items-center"
+                    >
+                      <div
+                        class="w-6 h-6 flex items-center justify-center mr-3 text-primary"
+                      >
+                        <i class="ri-car-line"></i>
+                      </div>
+                      Купе
+                    </div>
+                    <div
+                      class="py-2 px-3 hover:bg-gray-50 cursor-pointer rounded flex items-center"
+                    >
+                      <div
+                        class="w-6 h-6 flex items-center justify-center mr-3 text-primary"
+                      >
+                        <i class="ri-roadster-line"></i>
+                      </div>
+                      Кабриолет
+                    </div>
+                    <div
+                      class="py-2 px-3 hover:bg-gray-50 cursor-pointer rounded flex items-center"
+                    >
+                      <div
+                        class="w-6 h-6 flex items-center justify-center mr-3 text-primary"
+                      >
+                        <i class="ri-roadster-line"></i>
+                      </div>
+                      Родстер
+                    </div>
+                    <div
+                      class="py-2 px-3 hover:bg-gray-50 cursor-pointer rounded flex items-center"
+                    >
+                      <div
+                        class="w-6 h-6 flex items-center justify-center mr-3 text-primary"
+                      >
+                        <i class="ri-car-line"></i>
+                      </div>
+                      Тарга
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 mb-3 flex items-center"
+              >
+                <div
+                  class="w-5 h-5 flex items-center justify-center mr-2 text-primary"
+                >
+                  <i class="ri-dashboard-3-line"></i>
+                </div>
+                Мощность (л.с.)
+              </label>
+              <div class="px-1">
+                <div class="relative">
+                  <input
+                    type="range"
+                    min="300"
+                    max="1500"
+                    value="700"
+                    class="w-full"
+                    id="power-range"
+                  />
+                  <div
+                    class="absolute -top-2 left-0 right-0 pointer-events-none"
+                  >
+                    <div class="relative h-1">
+                      <div
+                        id="power-progress"
+                        class="absolute left-0 h-full bg-primary rounded-full"
+                        style="width: calc((700 - 300) / (1500 - 300) * 100%)"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex justify-between text-sm text-gray-600 mt-3">
+                  <span>300</span>
+                  <span id="power-value" class="font-medium text-primary"
+                    >700 л.с.</span
+                  >
+                  <span>1500</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 mb-3 flex items-center"
+              >
+                <div
+                  class="w-5 h-5 flex items-center justify-center mr-2 text-primary"
+                >
+                  <i class="ri-timer-flash-line"></i>
+                </div>
+                Разгон до 100 км/ч
+              </label>
+              <div class="px-1">
+                <div class="relative">
+                  <input
+                    type="range"
+                    min="15"
+                    max="50"
+                    value="30"
+                    class="w-full"
+                    id="acceleration-range"
+                  />
+                  <div
+                    class="absolute -top-2 left-0 right-0 pointer-events-none"
+                  >
+                    <div class="relative h-1">
+                      <div
+                        id="acceleration-progress"
+                        class="absolute left-0 h-full bg-primary rounded-full"
+                        style="width: calc((30 - 15) / (50 - 15) * 100%)"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex justify-between text-sm text-gray-600 mt-3">
+                  <span>1.5 с</span>
+                  <span id="acceleration-value" class="font-medium text-primary"
+                    >3.0 с</span
+                  >
+                  <span>5.0 с</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Привод</label
+              >
+              <div class="space-y-2">
+                <label class="custom-checkbox block text-sm">
+                  Задний
+                  <input type="checkbox" checked />
+                  <span class="checkmark"></span>
+                </label>
+                <label class="custom-checkbox block text-sm">
+                  Полный
+                  <input type="checkbox" checked />
+                  <span class="checkmark"></span>
+                </label>
+                <label class="custom-checkbox block text-sm">
+                  Передний
+                  <input type="checkbox" />
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Трансмиссия</label
+              >
+              <div class="space-y-2">
+                <label class="custom-checkbox block text-sm">
+                  Автоматическая
+                  <input type="checkbox" checked />
+                  <span class="checkmark"></span>
+                </label>
+                <label class="custom-checkbox block text-sm">
+                  Роботизированная
+                  <input type="checkbox" checked />
+                  <span class="checkmark"></span>
+                </label>
+                <label class="custom-checkbox block text-sm">
+                  Механическая
+                  <input type="checkbox" checked />
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Дополнительно</label
+              >
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm">Гибридный двигатель</span>
+                  <label class="custom-switch">
+                    <input type="checkbox" />
+                    <span class="switch-slider"></span>
+                  </label>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm">Полностью электрический</span>
+                  <label class="custom-switch">
+                    <input type="checkbox" />
+                    <span class="switch-slider"></span>
+                  </label>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm">Лимитированная серия</span>
+                  <label class="custom-switch">
+                    <input type="checkbox" checked />
+                    <span class="switch-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-end">
+              <a
+                href="akyl2.html"
+                data-readdy="true"
+                class="w-full bg-primary hover:bg-opacity-90 text-white py-3 px-6 rounded-button font-medium transition-all duration-300 flex items-center justify-center !rounded-button whitespace-nowrap"
+              >
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                  <i class="ri-search-line"></i>
+                </div>
+                <span>Найти автомобили</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Категории -->
+    <section id="categories" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-4">
+          Категории спорткаров
+        </h2>
+        <p class="text-gray-600 text-center max-w-2xl mx-auto mb-12">
+          Исследуйте различные категории высокопроизводительных автомобилей, от
+          классических суперкаров до современных гиперкаров
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div
+            class="category-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=luxury%20supercar%20on%20carbon%20fiber%20background%2C%20professional%20automotive%20photography%2C%20dramatic%20lighting%2C%20side%20view%2C%20detailed%20shot%2C%20glossy%20red%20paint%2C%20high%20resolution%2C%20hyperrealistic&width=600&height=400&seq=cat1&orientation=landscape"
+                alt="Суперкары"
+                class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Суперкары</h3>
+              <p class="text-gray-600 mb-4">
+                Высокопроизводительные автомобили с мощностью более 500 л.с. и
+                эксклюзивным дизайном
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-500">42 модели</span>
+                <button
+                  class="text-primary hover:text-opacity-80 font-medium flex items-center !rounded-button whitespace-nowrap"
+                >
+                  <span>Подробнее</span>
+                  <div class="w-5 h-5 flex items-center justify-center ml-1">
+                    <i class="ri-arrow-right-s-line"></i>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="category-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=luxury%20hypercar%20on%20carbon%20fiber%20background%2C%20professional%20automotive%20photography%2C%20dramatic%20lighting%2C%20front%20view%2C%20detailed%20shot%2C%20glossy%20black%20paint%20with%20blue%20accents%2C%20high%20resolution%2C%20hyperrealistic&width=600&height=400&seq=cat2&orientation=landscape"
+                alt="Гиперкары"
+                class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Гиперкары</h3>
+              <p class="text-gray-600 mb-4">
+                Элитные автомобили с мощностью более 1000 л.с., ограниченным
+                тиражом и революционными технологиями
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-500">18 моделей</span>
+                <button
+                  class="text-primary hover:text-opacity-80 font-medium flex items-center !rounded-button whitespace-nowrap"
+                >
+                  <span>Подробнее</span>
+                  <div class="w-5 h-5 flex items-center justify-center ml-1">
+                    <i class="ri-arrow-right-s-line"></i>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="category-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=luxury%20GT%20sports%20car%20on%20carbon%20fiber%20background%2C%20professional%20automotive%20photography%2C%20dramatic%20lighting%2C%203%2F4%20view%2C%20detailed%20shot%2C%20glossy%20silver%20paint%2C%20high%20resolution%2C%20hyperrealistic&width=600&height=400&seq=cat3&orientation=landscape"
+                alt="Гран-туризмо"
+                class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Гран-туризмо</h3>
+              <p class="text-gray-600 mb-4">
+                Спортивные автомобили, сочетающие высокую производительность с
+                комфортом для дальних поездок
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-500">35 моделей</span>
+                <button
+                  class="text-primary hover:text-opacity-80 font-medium flex items-center !rounded-button whitespace-nowrap"
+                >
+                  <span>Подробнее</span>
+                  <div class="w-5 h-5 flex items-center justify-center ml-1">
+                    <i class="ri-arrow-right-s-line"></i>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="category-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=luxury%20electric%20sports%20car%20on%20carbon%20fiber%20background%2C%20professional%20automotive%20photography%2C%20dramatic%20lighting%2C%20side%20view%2C%20detailed%20shot%2C%20glossy%20white%20paint%20with%20blue%20accents%2C%20high%20resolution%2C%20hyperrealistic&width=600&height=400&seq=cat4&orientation=landscape"
+                alt="Электрические спорткары"
+                class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Электрические спорткары</h3>
+              <p class="text-gray-600 mb-4">
+                Современные высокопроизводительные электромобили с мгновенным
+                крутящим моментом и нулевыми выбросами
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-500">23 модели</span>
+                <button
+                  class="text-primary hover:text-opacity-80 font-medium flex items-center !rounded-button whitespace-nowrap"
+                >
+                  <span>Подробнее</span>
+                  <div class="w-5 h-5 flex items-center justify-center ml-1">
+                    <i class="ri-arrow-right-s-line"></i>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="category-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=luxury%20convertible%20sports%20car%20on%20carbon%20fiber%20background%2C%20professional%20automotive%20photography%2C%20dramatic%20lighting%2C%20top-down%20view%2C%20detailed%20shot%2C%20glossy%20yellow%20paint%2C%20high%20resolution%2C%20hyperrealistic&width=600&height=400&seq=cat5&orientation=landscape"
+                alt="Кабриолеты и родстеры"
+                class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Кабриолеты и родстеры</h3>
+              <p class="text-gray-600 mb-4">
+                Открытые спортивные автомобили, обеспечивающие непревзойденные
+                ощущения от вождения под открытым небом
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-500">29 моделей</span>
+                <button
+                  class="text-primary hover:text-opacity-80 font-medium flex items-center !rounded-button whitespace-nowrap"
+                >
+                  <span>Подробнее</span>
+                  <div class="w-5 h-5 flex items-center justify-center ml-1">
+                    <i class="ri-arrow-right-s-line"></i>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="category-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl"
+          >
+            <div class="h-48 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=luxury%20limited%20edition%20sports%20car%20on%20carbon%20fiber%20background%2C%20professional%20automotive%20photography%2C%20dramatic%20lighting%2C%20front%203%2F4%20view%2C%20detailed%20shot%2C%20glossy%20green%20paint%2C%20high%20resolution%2C%20hyperrealistic&width=600&height=400&seq=cat6&orientation=landscape"
+                alt="Лимитированные серии"
+                class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Лимитированные серии</h3>
+              <p class="text-gray-600 mb-4">
+                Эксклюзивные модели, выпущенные ограниченным тиражом, с
+                уникальным дизайном и характеристиками
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-500">15 моделей</span>
+                <button
+                  class="text-primary hover:text-opacity-80 font-medium flex items-center !rounded-button whitespace-nowrap"
+                >
+                  <span>Подробнее</span>
+                  <div class="w-5 h-5 flex items-center justify-center ml-1">
+                    <i class="ri-arrow-right-s-line"></i>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Характеристики -->
+    <section id="specs" class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-4">
+          Сравнение характеристик
+        </h2>
+        <p class="text-gray-600 text-center max-w-2xl mx-auto mb-12">
+          Изучите и сравните технические характеристики топовых спорткаров, от
+          мощности двигателя до максимальной скорости
+        </p>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="bg-gray-50 rounded-lg p-6 shadow-md">
+            <h3 class="text-xl font-bold mb-4">Мощность двигателя (л.с.)</h3>
+            <div id="power-chart" class="h-80"></div>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-6 shadow-md">
+            <h3 class="text-xl font-bold mb-4">Разгон до 100 км/ч (сек)</h3>
+            <div id="acceleration-chart" class="h-80"></div>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-6 shadow-md">
+            <h3 class="text-xl font-bold mb-4">Максимальная скорость (км/ч)</h3>
+            <div id="speed-chart" class="h-80"></div>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-6 shadow-md">
+            <h3 class="text-xl font-bold mb-4">
+              Соотношение мощности к весу (л.с./кг)
+            </h3>
+            <div id="power-weight-chart" class="h-80"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Статистика -->
+    <section id="stats" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-4">
+          Интересные факты и статистика
+        </h2>
+        <p class="text-gray-600 text-center max-w-2xl mx-auto mb-12">
+          Узнайте больше о мире спорткаров через интересную статистику и факты
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-white rounded-lg p-6 shadow-md text-center">
+            <div
+              class="w-16 h-16 flex items-center justify-center mx-auto mb-4 bg-primary bg-opacity-10 rounded-full text-primary"
+            >
+              <i class="ri-speed-up-line ri-2x"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-2">
+              <span class="stat-counter" data-target="412">412</span> км/ч
+            </h3>
+            <p class="text-gray-600">
+              Максимальная скорость самого быстрого серийного автомобиля
+            </p>
+          </div>
+          <div class="bg-white rounded-lg p-6 shadow-md text-center">
+            <div
+              class="w-16 h-16 flex items-center justify-center mx-auto mb-4 bg-primary bg-opacity-10 rounded-full text-primary"
+            >
+              <i class="ri-rocket-line ri-2x"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-2">
+              <span class="stat-counter" data-target="1">1</span>.<span
+                class="stat-counter"
+                data-target="85"
+                >85</span
+              >
+              сек
+            </h3>
+            <p class="text-gray-600">
+              Самый быстрый разгон до 100 км/ч среди серийных автомобилей
+            </p>
+          </div>
+          <div class="bg-white rounded-lg p-6 shadow-md text-center">
+            <div
+              class="w-16 h-16 flex items-center justify-center mx-auto mb-4 bg-primary bg-opacity-10 rounded-full text-primary"
+            >
+              <i class="ri-flashlight-line ri-2x"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-2">
+              <span class="stat-counter" data-target="1">1</span>.<span
+                class="stat-counter"
+                data-target="9"
+                >9</span
+              >
+              МВт
+            </h3>
+            <p class="text-gray-600">
+              Мощность самого мощного электрического гиперкара
+            </p>
+          </div>
+          <div class="bg-white rounded-lg p-6 shadow-md text-center">
+            <div
+              class="w-16 h-16 flex items-center justify-center mx-auto mb-4 bg-primary bg-opacity-10 rounded-full text-primary"
+            >
+              <i class="ri-money-dollar-circle-line ri-2x"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-2">
+              $<span class="stat-counter" data-target="18">18</span> млн
+            </h3>
+            <p class="text-gray-600">
+              Стоимость самого дорогого современного спорткара
+            </p>
+          </div>
+        </div>
+        <div class="mt-12 bg-white rounded-lg p-6 shadow-md">
+          <h3 class="text-xl font-bold mb-4">
+            Распределение спорткаров по странам-производителям
+          </h3>
+          <div id="country-chart" class="h-80"></div>
+        </div>
+      </div>
+    </section>
+    <!-- Контакты -->
+    <section id="contact" class="carbon-texture py-16 relative">
+      <div class="container mx-auto px-4 relative z-10">
+        <div
+          class="max-w-4xl mx-auto bg-carbon-light bg-opacity-80 backdrop-blur-md rounded-lg p-8 shadow-2xl"
+        >
+          <h2 class="text-3xl font-bold text-white text-center mb-6">
+            Свяжитесь с нами
+          </h2>
+          <p class="text-gray-300 text-center mb-8">
+            Остались вопросы или нужна дополнительная информация? Заполните
+            форму ниже, и мы свяжемся с вами в ближайшее время.
+          </p>
+          <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-gray-300 text-sm font-medium mb-2"
+                >Имя</label
+              >
+              <input
+                type="text"
+                class="w-full bg-carbon-dark text-white border border-gray-600 rounded py-3 px-4 focus:outline-none focus:border-primary transition-colors duration-300"
+                placeholder="Введите ваше имя"
+              />
+            </div>
+            <div>
+              <label class="block text-gray-300 text-sm font-medium mb-2"
+                >Email</label
+              >
+              <input
+                type="email"
+                class="w-full bg-carbon-dark text-white border border-gray-600 rounded py-3 px-4 focus:outline-none focus:border-primary transition-colors duration-300"
+                placeholder="Введите ваш email"
+              />
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-gray-300 text-sm font-medium mb-2"
+                >Тема</label
+              >
+              <div class="relative">
+                <button
+                  id="topic-dropdown-btn"
+                  class="w-full bg-carbon-dark border border-gray-600 rounded text-white py-3 px-4 flex items-center justify-between !rounded-button whitespace-nowrap"
+                >
+                  <span>Выберите тему</span>
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-arrow-down-s-line"></i>
+                  </div>
+                </button>
+                <div
+                  id="topic-dropdown"
+                  class="hidden absolute left-0 right-0 top-full mt-1 bg-carbon-dark border border-gray-600 rounded shadow-lg z-10"
+                >
+                  <div class="p-2">
+                    <div
+                      class="py-2 px-3 hover:bg-carbon-light cursor-pointer rounded text-white"
+                    >
+                      Общие вопросы
+                    </div>
+                    <div
+                      class="py-2 px-3 hover:bg-carbon-light cursor-pointer rounded text-white"
+                    >
+                      Технические характеристики
+                    </div>
+                    <div
+                      class="py-2 px-3 hover:bg-carbon-light cursor-pointer rounded text-white"
+                    >
+                      Тест-драйв
+                    </div>
+                    <div
+                      class="py-2 px-3 hover:bg-carbon-light cursor-pointer rounded text-white"
+                    >
+                      Сотрудничество
+                    </div>
+                    <div
+                      class="py-2 px-3 hover:bg-carbon-light cursor-pointer rounded text-white"
+                    >
+                      Другое
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-gray-300 text-sm font-medium mb-2"
+                >Сообщение</label
+              >
+              <textarea
+                class="w-full bg-carbon-dark text-white border border-gray-600 rounded py-3 px-4 focus:outline-none focus:border-primary transition-colors duration-300 h-32"
+                placeholder="Введите ваше сообщение"
+              ></textarea>
+            </div>
+            <div class="md:col-span-2">
+              <label class="custom-checkbox block text-gray-300 text-sm mb-4">
+                Я согласен с политикой конфиденциальности и обработкой
+                персональных данных
+                <input type="checkbox" />
+                <span class="checkmark"></span>
+              </label>
+            </div>
+            <div class="md:col-span-2 text-center">
+              <button
+                type="submit"
+                class="bg-primary hover:bg-opacity-90 text-white py-3 px-8 rounded-button font-medium transition-all duration-300 inline-flex items-center !rounded-button whitespace-nowrap"
+              >
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                  <i class="ri-send-plane-line"></i>
+                </div>
+                <span>Отправить сообщение</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <!-- Футер -->
+    <footer class="bg-carbon-dark py-12">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+          <div>
+            <a
+              href="#"
+              class="text-white font-['Pacifico'] text-3xl mb-4 inline-block"
+              >logo</a
+            >
+            <p class="text-gray-400 mb-4">
+              Ваш надежный источник информации о мире элитных спортивных
+              автомобилей.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-primary transition-colors duration-300"
+              >
+                <i class="ri-facebook-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-primary transition-colors duration-300"
+              >
+                <i class="ri-twitter-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-primary transition-colors duration-300"
+              >
+                <i class="ri-instagram-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-primary transition-colors duration-300"
+              >
+                <i class="ri-youtube-fill"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-white font-bold text-lg mb-4">Быстрые ссылки</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#main"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300"
+                  >Главная</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#categories"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300"
+                  >Категории</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#specs"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300"
+                  >Характеристики</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#stats"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300"
+                  >Статистика</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#contact"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300"
+                  >Контакты</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-bold text-lg mb-4">Популярные марки</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300"
+                  >Ferrari</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300"
+                  >Lamborghini</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300"
+                  >Porsche</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300"
+                  >McLaren</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors duration-300"
+                  >Bugatti</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-bold text-lg mb-4">Контакты</h4>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-primary mr-3 mt-1"
+                >
+                  <i class="ri-map-pin-line"></i>
+                </div>
+                <span class="text-gray-400"
+                  >ул. Автомобильная, 123, Москва, Россия</span
+                >
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-primary mr-3 mt-1"
+                >
+                  <i class="ri-phone-line"></i>
+                </div>
+                <span class="text-gray-400">+7 (495) 123-45-67</span>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-primary mr-3 mt-1"
+                >
+                  <i class="ri-mail-line"></i>
+                </div>
+                <span class="text-gray-400">info@sportcars.ru</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="pt-8 border-t border-gray-800 text-center">
+          <p class="text-gray-500">
+            &copy; 2025 SportCars. Все права защищены.
+          </p>
+          <div class="flex justify-center mt-4 space-x-4">
+            <a
+              href="#"
+              class="text-gray-500 hover:text-primary transition-colors duration-300 text-sm"
+              >Политика конфиденциальности</a
+            >
+            <a
+              href="#"
+              class="text-gray-500 hover:text-primary transition-colors duration-300 text-sm"
+              >Условия использования</a
+            >
+            <a
+              href="#"
+              class="text-gray-500 hover:text-primary transition-colors duration-300 text-sm"
+              >Карта сайта</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Кнопка прокрутки вверх -->
+    <button
+      id="scroll-to-top"
+      class="fixed bottom-6 right-6 w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full shadow-lg opacity-0 invisible transition-all duration-300 z-50"
+    >
+      <i class="ri-arrow-up-line ri-lg"></i>
+    </button>
+    <!-- Скрипты -->
+    <script id="mobile-menu-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenu = document.getElementById("mobile-menu");
+        mobileMenuButton.addEventListener("click", function () {
+          mobileMenu.classList.toggle("hidden");
+        });
+        // Закрыть меню при клике на пункт меню
+        const mobileMenuItems = mobileMenu.querySelectorAll("a");
+        mobileMenuItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            mobileMenu.classList.add("hidden");
+          });
+        });
+      });
+    </script>
+    <script id="dropdown-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        // Функция для обработки выпадающих списков
+        function setupDropdown(buttonId, dropdownId) {
+          const button = document.getElementById(buttonId);
+          const dropdown = document.getElementById(dropdownId);
+          if (!button || !dropdown) return;
+          button.addEventListener("click", function () {
+            dropdown.classList.toggle("hidden");
+          });
+          // Закрыть при клике на элемент
+          const dropdownItems = dropdown.querySelectorAll("div");
+          dropdownItems.forEach((item) => {
+            item.addEventListener("click", function () {
+              button.querySelector("span").textContent = this.textContent;
+              dropdown.classList.add("hidden");
+            });
+          });
+          // Закрыть при клике вне выпадающего списка
+          document.addEventListener("click", function (event) {
+            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+              dropdown.classList.add("hidden");
+            }
+          });
+        }
+        // Настройка всех выпадающих списков
+        setupDropdown("brand-dropdown-btn", "brand-dropdown");
+        setupDropdown("body-dropdown-btn", "body-dropdown");
+        setupDropdown("topic-dropdown-btn", "topic-dropdown");
+      });
+    </script>
+    <script id="range-slider-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        // Настройка слайдеров диапазона
+        const powerRange = document.getElementById("power-range");
+        const powerValue = document.getElementById("power-value");
+        const powerProgress = document.getElementById("power-progress");
+        const accelerationRange = document.getElementById("acceleration-range");
+        const accelerationValue = document.getElementById("acceleration-value");
+        const accelerationProgress = document.getElementById("acceleration-progress");
+        if (powerRange && powerValue && powerProgress) {
+          powerRange.addEventListener("input", function () {
+            const value = this.value;
+            powerValue.textContent = value + " л.с.";
+            const percent = ((value - this.min) / (this.max - this.min)) * 100;
+            powerProgress.style.width = percent + "%";
+          });
+        }
+        if (accelerationRange && accelerationValue && accelerationProgress) {
+          accelerationRange.addEventListener("input", function () {
+            const value = (this.value / 10).toFixed(1);
+            accelerationValue.textContent = value + " с";
+            const percent = ((this.value - this.min) / (this.max - this.min)) * 100;
+            accelerationProgress.style.width = percent + "%";
+          });
+        }
+      });
+    </script>
+    <script id="search-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const mainSearch = document.getElementById("main-search");
+        const searchResults = document.getElementById("search-results");
+        if (!mainSearch || !searchResults) return;
+        // Демонстрационные данные для поиска
+        const cars = [
+          {
+            name: "Ferrari SF90 Stradale",
+            type: "Гиперкар",
+            power: "1000 л.с.",
+            acceleration: "2.5 с",
+          },
+          {
+            name: "Lamborghini Aventador SVJ",
+            type: "Суперкар",
+            power: "770 л.с.",
+            acceleration: "2.8 с",
+          },
+          {
+            name: "Bugatti Chiron",
+            type: "Гиперкар",
+            power: "1500 л.с.",
+            acceleration: "2.4 с",
+          },
+          {
+            name: "McLaren 720S",
+            type: "Суперкар",
+            power: "720 л.с.",
+            acceleration: "2.9 с",
+          },
+          {
+            name: "Porsche 911 Turbo S",
+            type: "Спорткар",
+            power: "650 л.с.",
+            acceleration: "2.7 с",
+          },
+          {
+            name: "Aston Martin DBS Superleggera",
+            type: "Гран-туризмо",
+            power: "725 л.с.",
+            acceleration: "3.4 с",
+          },
+        ];
+        // Функция для создания результата поиска
+        function createSearchResult(car) {
+          const resultDiv = document.createElement("div");
+          resultDiv.className =
+            "flex items-center p-3 hover:bg-carbon-dark rounded cursor-pointer transition-colors duration-200";
+          resultDiv.innerHTML = `
+      <div class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-10 rounded-full text-primary mr-3">
+      <i class="ri-car-line"></i>
+      </div>
+      <div class="flex-1">
+      <h4 class="text-white font-medium">${car.name}</h4>
+      <div class="flex text-xs text-gray-400">
+      <span class="mr-3">${car.type}</span>
+      <span class="mr-3">${car.power}</span>
+      <span>${car.acceleration}</span>
+      </div>
+      </div>
+      `;
+          return resultDiv;
+        }
+        // Обработка ввода в поле поиска
+        mainSearch.addEventListener("input", function () {
+          const searchTerm = this.value.toLowerCase();
+          const resultsContainer = searchResults.querySelector(".flex-col");
+          // Очистить предыдущие результаты
+          resultsContainer.innerHTML = "";
+          if (searchTerm.length > 1) {
+            // Фильтрация автомобилей по поисковому запросу
+            const filteredCars = cars.filter(
+              (car) =>
+                car.name.toLowerCase().includes(searchTerm) ||
+                car.type.toLowerCase().includes(searchTerm),
+            );
+            // Добавление результатов
+            if (filteredCars.length > 0) {
+              filteredCars.forEach((car) => {
+                resultsContainer.appendChild(createSearchResult(car));
+              });
+              searchResults.classList.add("active");
+            } else {
+              const noResults = document.createElement("div");
+              noResults.className = "text-gray-400 text-center py-3";
+              noResults.textContent = "Ничего не найдено";
+              resultsContainer.appendChild(noResults);
+              searchResults.classList.add("active");
+            }
+          } else {
+            searchResults.classList.remove("active");
+          }
+        });
+        // Закрыть результаты при клике вне поля поиска
+        document.addEventListener("click", function (event) {
+          if (
+            !mainSearch.contains(event.target) &&
+            !searchResults.contains(event.target)
+          ) {
+            searchResults.classList.remove("active");
+          }
+        });
+        // Фокус на поле поиска показывает результаты
+        mainSearch.addEventListener("focus", function () {
+          if (this.value.length > 1) {
+            searchResults.classList.add("active");
+          }
+        });
+      });
+    </script>
+    <script id="car-slider-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        // Данные для слайдера
+        const slides = [
+          {
+            image:
+              "https://readdy.ai/api/search-image?query=luxury%20red%20Ferrari%20sports%20car%20on%20a%20dark%20background%2C%20carbon%20fiber%20elements%2C%20dramatic%20lighting%2C%20professional%20automotive%20photography%2C%20glossy%20finish%2C%20detailed%20shot%2C%20studio%20lighting%2C%208k%20resolution%2C%20hyperrealistic&width=1200&height=600&seq=car1&orientation=landscape",
+            title: "Ferrari SF90 Stradale",
+            description:
+              "Гибридный суперкар с мощностью 1000 л.с. и разгоном до 100 км/ч за 2.5 секунды",
+          },
+          {
+            image:
+              "https://readdy.ai/api/search-image?query=luxury%20blue%20Lamborghini%20sports%20car%20on%20a%20dark%20background%2C%20carbon%20fiber%20elements%2C%20dramatic%20lighting%2C%20professional%20automotive%20photography%2C%20glossy%20finish%2C%20detailed%20shot%2C%20studio%20lighting%2C%208k%20resolution%2C%20hyperrealistic&width=1200&height=600&seq=car2&orientation=landscape",
+            title: "Lamborghini Aventador SVJ",
+            description:
+              "Флагманский суперкар с атмосферным V12 мощностью 770 л.с. и активной аэродинамикой",
+          },
+          {
+            image:
+              "https://readdy.ai/api/search-image?query=luxury%20black%20Bugatti%20sports%20car%20on%20a%20dark%20background%2C%20carbon%20fiber%20elements%2C%20dramatic%20lighting%2C%20professional%20automotive%20photography%2C%20glossy%20finish%2C%20detailed%20shot%2C%20studio%20lighting%2C%208k%20resolution%2C%20hyperrealistic&width=1200&height=600&seq=car3&orientation=landscape",
+            title: "Bugatti Chiron",
+            description:
+              "Гиперкар с 8.0-литровым W16 мощностью 1500 л.с. и максимальной скоростью 420 км/ч",
+          },
+          {
+            image:
+              "https://readdy.ai/api/search-image?query=luxury%20orange%20McLaren%20sports%20car%20on%20a%20dark%20background%2C%20carbon%20fiber%20elements%2C%20dramatic%20lighting%2C%20professional%20automotive%20photography%2C%20glossy%20finish%2C%20detailed%20shot%2C%20studio%20lighting%2C%208k%20resolution%2C%20hyperrealistic&width=1200&height=600&seq=car4&orientation=landscape",
+            title: "McLaren 720S",
+            description:
+              "Легкий и мощный суперкар с инновационной аэродинамикой и разгоном до 100 км/ч за 2.9 секунды",
+          },
+        ];
+        const sliderContainer = document.querySelector("#car-slider .relative");
+        const sliderButtons = document.querySelectorAll("#car-slider + div button");
+        let currentSlide = 0;
+        // Функция для смены слайда
+        function changeSlide(index) {
+          // Обновление фонового изображения
+          sliderContainer.querySelector(".absolute").style.backgroundImage =
+            `url('${slides[index].image}')`;
+          // Обновление текста
+          sliderContainer.querySelector("h3").textContent = slides[index].title;
+          sliderContainer.querySelector("p").textContent = slides[index].description;
+          // Обновление индикаторов
+          sliderButtons.forEach((button, i) => {
+            if (i === index) {
+              button.classList.remove("bg-gray-500");
+              button.classList.add("bg-primary");
+            } else {
+              button.classList.remove("bg-primary");
+              button.classList.add("bg-gray-500");
+            }
+          });
+          currentSlide = index;
+        }
+        // Обработка клика по индикаторам
+        sliderButtons.forEach((button, index) => {
+          button.addEventListener("click", function () {
+            changeSlide(index);
+          });
+        });
+        // Автоматическая смена слайдов
+        /*
+      setInterval(function() {
+      const nextSlide = (currentSlide + 1) % slides.length;
+      changeSlide(nextSlide);
+      }, 5000);
+      */
+      });
+    </script>
+    <script id="charts-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        // Инициализация графиков
+        const powerChart = echarts.init(document.getElementById("power-chart"));
+        const accelerationChart = echarts.init(
+          document.getElementById("acceleration-chart"),
+        );
+        const speedChart = echarts.init(document.getElementById("speed-chart"));
+        const powerWeightChart = echarts.init(
+          document.getElementById("power-weight-chart"),
+        );
+        const countryChart = echarts.init(document.getElementById("country-chart"));
+        // Общие опции для всех графиков
+        const commonOptions = {
+          animation: false,
+          tooltip: {
+            trigger: "axis",
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+            borderColor: "#ddd",
+            borderWidth: 1,
+            textStyle: {
+              color: "#333",
+            },
+          },
+          grid: {
+            top: 30,
+            right: 20,
+            bottom: 40,
+            left: 60,
+          },
+          textStyle: {
+            color: "#1f2937",
+          },
+        };
+        // График мощности
+        const powerOptions = {
+          ...commonOptions,
+          xAxis: {
+            type: "category",
+            data: [
+              "Ferrari SF90",
+              "Lamborghini SVJ",
+              "Bugatti Chiron",
+              "McLaren 720S",
+              "Porsche 911 Turbo S",
+            ],
+            axisLabel: {
+              rotate: 30,
+            },
+          },
+          yAxis: {
+            type: "value",
+            name: "л.с.",
+          },
+          series: [
+            {
+              name: "Мощность",
+              type: "bar",
+              data: [1000, 770, 1500, 720, 650],
+              itemStyle: {
+                color: "rgba(87, 181, 231, 1)",
+                borderRadius: 6,
+              },
+            },
+          ],
+        };
+        // График разгона
+        const accelerationOptions = {
+          ...commonOptions,
+          xAxis: {
+            type: "category",
+            data: [
+              "Ferrari SF90",
+              "Lamborghini SVJ",
+              "Bugatti Chiron",
+              "McLaren 720S",
+              "Porsche 911 Turbo S",
+            ],
+            axisLabel: {
+              rotate: 30,
+            },
+          },
+          yAxis: {
+            type: "value",
+            name: "секунды",
+            inverse: true,
+          },
+          series: [
+            {
+              name: "Разгон 0-100 км/ч",
+              type: "bar",
+              data: [2.5, 2.8, 2.4, 2.9, 2.7],
+              itemStyle: {
+                color: "rgba(141, 211, 199, 1)",
+                borderRadius: 6,
+              },
+            },
+          ],
+        };
+        // График максимальной скорости
+        const speedOptions = {
+          ...commonOptions,
+          xAxis: {
+            type: "category",
+            data: [
+              "Ferrari SF90",
+              "Lamborghini SVJ",
+              "Bugatti Chiron",
+              "McLaren 720S",
+              "Porsche 911 Turbo S",
+            ],
+            axisLabel: {
+              rotate: 30,
+            },
+          },
+          yAxis: {
+            type: "value",
+            name: "км/ч",
+          },
+          series: [
+            {
+              name: "Максимальная скорость",
+              type: "line",
+              data: [340, 350, 420, 341, 330],
+              smooth: true,
+              symbol: "none",
+              lineStyle: {
+                width: 4,
+                color: "rgba(251, 191, 114, 1)",
+              },
+              areaStyle: {
+                color: {
+                  type: "linear",
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: "rgba(251, 191, 114, 0.3)",
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(251, 191, 114, 0.1)",
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+        };
+        // График соотношения мощности к весу
+        const powerWeightOptions = {
+          ...commonOptions,
+          xAxis: {
+            type: "category",
+            data: [
+              "Ferrari SF90",
+              "Lamborghini SVJ",
+              "Bugatti Chiron",
+              "McLaren 720S",
+              "Porsche 911 Turbo S",
+            ],
+            axisLabel: {
+              rotate: 30,
+            },
+          },
+          yAxis: {
+            type: "value",
+            name: "л.с./кг",
+          },
+          series: [
+            {
+              name: "Соотношение мощности к весу",
+              type: "line",
+              data: [0.67, 0.56, 0.74, 0.59, 0.48],
+              smooth: true,
+              symbol: "none",
+              lineStyle: {
+                width: 4,
+                color: "rgba(252, 141, 98, 1)",
+              },
+              areaStyle: {
+                color: {
+                  type: "linear",
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: "rgba(252, 141, 98, 0.3)",
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(252, 141, 98, 0.1)",
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+        };
+        // График распределения по странам
+        const countryOptions = {
+          ...commonOptions,
+          tooltip: {
+            trigger: "item",
+          },
+          legend: {
+            orient: "vertical",
+            right: 10,
+            top: "center",
+          },
+          series: [
+            {
+              name: "Страна-производитель",
+              type: "pie",
+              radius: ["40%", "70%"],
+              avoidLabelOverlap: false,
+              itemStyle: {
+                borderRadius: 10,
+                borderColor: "#fff",
+                borderWidth: 2,
+              },
+              label: {
+                show: false,
+              },
+              emphasis: {
+                label: {
+                  show: true,
+                  fontSize: "14",
+                  fontWeight: "bold",
+                },
+              },
+              labelLine: {
+                show: false,
+              },
+              data: [
+                {
+                  value: 28,
+                  name: "Италия",
+                  itemStyle: { color: "rgba(87, 181, 231, 1)" },
+                },
+                {
+                  value: 22,
+                  name: "Германия",
+                  itemStyle: { color: "rgba(141, 211, 199, 1)" },
+                },
+                {
+                  value: 18,
+                  name: "Великобритания",
+                  itemStyle: { color: "rgba(251, 191, 114, 1)" },
+                },
+                {
+                  value: 12,
+                  name: "Франция",
+                  itemStyle: { color: "rgba(252, 141, 98, 1)" },
+                },
+              ],
+            },
+          ],
+        };
+        // Отрисовка графиков
+        powerChart.setOption(powerOptions);
+        accelerationChart.setOption(accelerationOptions);
+        speedChart.setOption(speedOptions);
+        powerWeightChart.setOption(powerWeightOptions);
+        countryChart.setOption(countryOptions);
+        // Адаптивность графиков
+        window.addEventListener("resize", function () {
+          powerChart.resize();
+          accelerationChart.resize();
+          speedChart.resize();
+          powerWeightChart.resize();
+          countryChart.resize();
+        });
+      });
+    </script>
+    <script id="scroll-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const scrollToTopButton = document.getElementById("scroll-to-top");
+        // Показать/скрыть кнопку прокрутки вверх
+        window.addEventListener("scroll", function () {
+          if (window.pageYOffset > 300) {
+            scrollToTopButton.classList.remove("opacity-0", "invisible");
+            scrollToTopButton.classList.add("opacity-100", "visible");
+          } else {
+            scrollToTopButton.classList.remove("opacity-100", "visible");
+            scrollToTopButton.classList.add("opacity-0", "invisible");
+          }
+        });
+        // Прокрутка вверх при клике на кнопку
+        scrollToTopButton.addEventListener("click", function () {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        });
+        // Плавная прокрутка для якорных ссылок
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") return;
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 80, // Учитываем высоту шапки
+                behavior: "smooth",
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
